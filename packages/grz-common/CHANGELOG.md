@@ -1,5 +1,31 @@
 # Changelog
 
+## [4.0.0](https://github.com/BfArM-MVH/grz-tools/compare/grz-common-v3.0.0...grz-common-v4.0.0) (2026-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **grzctl,grz-common:** `S3ConnectionBase.secret`, `S3ConnectionBase.session_token`, `Author.private_key_passphrase`, `InboxConfig.private_key_passphrase`, `InboxTarget.private_key_passphrase` and `PruefberichtModel.client_secret` are now `SecretStr | None`. Read them with `.get_secret_value()` or `grz_common.models.base.get_secret_value()`.
+* **grzctl:** unified config ([#635](https://github.com/BfArM-MVH/grz-tools/issues/635))
+
+### Features
+
+* **grz-pydantic-models,grz-common:** keep a parsed submission lossless and redact it by one rule ([#654](https://github.com/BfArM-MVH/grz-tools/issues/654)) ([ec46603](https://github.com/BfArM-MVH/grz-tools/commit/ec46603c8659d3e12759fa895e1593916822d36d))
+* **grz-pydantic-models:** add get_raw_dict for the document as ([ec46603](https://github.com/BfArM-MVH/grz-tools/commit/ec46603c8659d3e12759fa895e1593916822d36d))
+* **grzctl,grz-common:** store sensitive config values as SecretStr and dump config without revealing them ([#680](https://github.com/BfArM-MVH/grz-tools/issues/680)) ([b383ac4](https://github.com/BfArM-MVH/grz-tools/commit/b383ac49a1f0dd5ec8d05aee7b645c2252ca40b3))
+* **grzctl:** Centralized version.json and its distribution using grzctl ([#667](https://github.com/BfArM-MVH/grz-tools/issues/667)) ([6ed9cb0](https://github.com/BfArM-MVH/grz-tools/commit/6ed9cb04bede9fc9b34b7ce6d3aa9a0df9d42ae4))
+* **grzctl:** unified config ([#635](https://github.com/BfArM-MVH/grz-tools/issues/635)) ([f993399](https://github.com/BfArM-MVH/grz-tools/commit/f993399d433c246f4cb4f162d5122397283f6bce))
+
+
+### Bug Fixes
+
+* **grz-common:** KeyModel/KeyConfigModel use BaseModel not BaseSettings ([f993399](https://github.com/BfArM-MVH/grz-tools/commit/f993399d433c246f4cb4f162d5122397283f6bce))
+* **grz-common:** require grz-pydantic-models &gt;=3.1 for ([ec46603](https://github.com/BfArM-MVH/grz-tools/commit/ec46603c8659d3e12759fa895e1593916822d36d))
+* **grz-db:** apply a change set as one transaction ([ec46603](https://github.com/BfArM-MVH/grz-tools/commit/ec46603c8659d3e12759fa895e1593916822d36d))
+* **grz-db:** export db_backend from grz_db.testing ([ec46603](https://github.com/BfArM-MVH/grz-tools/commit/ec46603c8659d3e12759fa895e1593916822d36d))
+* **grzctl,grz-common,grz-cli:** drop grzctl submit and grzctl's grz-cli dependency ([#675](https://github.com/BfArM-MVH/grz-tools/issues/675)) ([e6f27c1](https://github.com/BfArM-MVH/grz-tools/commit/e6f27c1714fc73d5159b29356914bc345a797c0a))
+* **grzctl:** name the submission fields the database actually has ([ec46603](https://github.com/BfArM-MVH/grz-tools/commit/ec46603c8659d3e12759fa895e1593916822d36d))
+
 ## [3.0.0](https://github.com/BfArM-MVH/grz-tools/compare/grz-common-v2.1.0...grz-common-v3.0.0) (2026-08-13)
 
 
