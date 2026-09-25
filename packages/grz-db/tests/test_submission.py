@@ -18,6 +18,7 @@ from grz_pydantic_models.submission.metadata import (
     GrzSubmissionMetadata,
     Relation,
 )
+from sqlalchemy.engine import URL, make_url
 from sqlmodel import Session
 
 TWO_TB = 2 * 1024**4  # 2,199,023,255,552 bytes
@@ -345,3 +346,23 @@ def test_a_database_that_is_behind_is_asked_again(db: SubmissionDb, monkeypatch:
 
     behind = False
     assert db.get_submission(SUBMISSION_ID) is None, "the upgrade must be picked up"
+
+
+@pytest.mark.parametrize("password", ["s3cret", "s3cr%et"])
+def test_alembic_config_keeps_the_database_password(password: str) -> None:
+    """Alembic connects with the URL it is handed, so the password must not be masked.
+
+    ``str()`` on a SQLAlchemy URL replaces the password with ``***``, and a ``%`` in the
+    password would be read as configparser interpolation unless it is escaped.
+    """
+    url = URL.create(
+        "postgresql+psycopg", username="grz", password=password, host="db.example", port=5432, database="grz"
+    )
+    submission_db = SubmissionDb(db_url=url.render_as_string(hide_password=False), author=None)
+    try:
+        alembic_url = submission_db._get_alembic_config().get_main_option("sqlalchemy.url")
+    finally:
+        submission_db.engine.dispose()
+
+    assert alembic_url is not None
+    assert make_url(alembic_url).password == password

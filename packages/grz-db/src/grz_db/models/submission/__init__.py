@@ -1065,7 +1065,9 @@ class SubmissionDb:
         """
         alembic_cfg = AlembicConfig()
         alembic_cfg.set_main_option("script_location", "grz_db:migrations")
-        alembic_cfg.set_main_option("sqlalchemy.url", str(self.engine.url))
+        # str() on a URL masks the password as "***", and the config reads "%" as interpolation.
+        db_url = self.engine.url.render_as_string(hide_password=False)
+        alembic_cfg.set_main_option("sqlalchemy.url", db_url.replace("%", "%%"))
         return alembic_cfg
 
     def _confirm_schema(self) -> None:
